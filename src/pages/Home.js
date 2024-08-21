@@ -1,15 +1,28 @@
 import Blits from '@lightningjs/blits'
-
-import Loader from '../components/Loader.js'
+import Data from "../api/mocked-data.js";
+import { shelfMapper } from "../helpers/map.js";
+import List from "../components/list/List.js";
 
 export default Blits.Component('Home', {
   components: {
-    Loader,
+    List,
   },
   template: `
-    <Element w="1920" h="1080" color="#1e293b">
-      <Element src="assets/logo.png" w="200" h="200" x="860" y="320" :effects="[$shader('radius', {radius: 12})]" />
-      <Loader x="880" y="600" />
+    <Element>
+      <List ref="List" :sections="$sections"/>
     </Element>
   `,
+  hooks: {
+    init() {
+      this.featured = Data.featured.data
+      this.sections = shelfMapper(Data.sections)
+    },
+    ready() {
+      const list = this.select('List')
+
+      if (list) {
+        list.focus()
+      }
+    }
+  },
 })

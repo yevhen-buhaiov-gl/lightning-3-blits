@@ -4,7 +4,7 @@ import Home from './pages/Home.js'
 
 export default Blits.Application({
   template: `
-    <Element>
+    <Element w="1920" h="1080">
       <RouterView />
     </Element>
    `,

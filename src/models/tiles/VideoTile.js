@@ -1,6 +1,7 @@
-export class VideoTile {
+import Tile from "./Tile.js";
+
+export class VideoTile extends Tile {
   constructor(component, data) {
-    this.component = component
-    this.data = data
+    super(component, data);
   }
 }

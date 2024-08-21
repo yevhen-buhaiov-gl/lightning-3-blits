@@ -1,6 +1,10 @@
-export class MovieTile {
+import Tile from "./Tile.js";
+
+export class MovieTile extends Tile{
   constructor(component, data) {
-    this.component = component
-    this.data = data
+    super(component, data);
+  }
+  get image() {
+    return this.data.posterImage
   }
 }

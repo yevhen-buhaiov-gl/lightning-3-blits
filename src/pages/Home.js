@@ -14,8 +14,7 @@ export default Blits.Component('Home', {
   `,
   hooks: {
     init() {
-      this.featured = Data.featured.data
-      this.sections = shelfMapper(Data.sections)
+      this.sections = shelfMapper(Data.sections).filter((shelf) => shelf.items.length)
     },
     ready() {
       const list = this.select('List')

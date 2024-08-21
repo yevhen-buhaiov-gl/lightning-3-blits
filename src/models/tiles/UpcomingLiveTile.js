@@ -1,6 +1,10 @@
-export class UpcomingLiveTile {
+import Tile from "./Tile.js";
+
+export class UpcomingLiveTile extends Tile {
   constructor(component, data) {
-    this.component = component
-    this.data = data
+    super(component, data);
+  }
+  get title() {
+    return this.data.title
   }
 }

@@ -1,28 +1,74 @@
 import Blits from "@lightningjs/blits";
-import VideoTile from "../tiles/VideoTile.js";
-import SeriesTile from "../tiles/SeriesTile.js";
-import MovieTile from "../tiles/MovieTile.js";
-import UpcomingLiveTile from "../tiles/UpcomingLiveTile.js";
+import GenericTile from "../tiles/GenericTile.js";
 
 export default Blits.Component('Carousel', {
   components: {
-    VideoTile,
-    SeriesTile,
-    MovieTile,
-    UpcomingLiveTile,
+    GenericTile,
   },
   template: `
     <Element>
-      <Component is="$item.component" :for="(item, idx) in $items" item="$item" index="$idx" :color="#000000" />
+      <Element>
+        <Text content="$title"/>
+      </Element>
+      <Element :x.transition="$rowOffset">
+        <GenericTile
+          y="60"
+          :ref="'item'+$idx"
+          :for="(item, idx) in $items"
+          item="$item"
+          :x.transition="$steps[$idx] + ($idx > 0 ? $idx * 20 : 0)"
+          key="$item.id"
+        />
+      </Element>
     </Element>
+
   `,
-  input: {
-    left(e) {
-      console.log('left', e);
-    },
-    right(e) {
-      console.log('right',e);
+  state() {
+    return {
+      focused: 0,
+      rowOffset: 0,
+    }
+  },
+  hooks: {
+    focus() {
+      this.trigger('focused')
     },
   },
-  props: ['items']
+  watch: {
+    focused(value) {
+      const focusItem = this.select(`item${value}`)
+      if (focusItem && focusItem.focus) {
+        focusItem.focus()
+        if (value < 1) {
+          this.rowOffset = 0
+        } else if (value > this.items.length - 2) {
+    
+        } else {
+          this.rowOffset = -this.steps[value] - (value > 0 ? value * 20 : 0)
+        }
+      }
+    },
+  },
+  input: {
+    left() {
+      if (this.focused > 0) {
+        this.focused--
+      } else {
+        this.focused = this.items.length - 1
+      }
+    },
+    right() {
+      if (this.focused < this.items.length - 1) {
+        this.focused++
+      } else {
+        this.focused = 0
+      }
+    },
+  },
+  computed: {
+    steps() {
+      return this.items.reduce((acc, curr) => [...acc, acc[acc.length - 1] + curr.width], [0]);
+    }
+  },
+  props: ['title', 'items']
 })

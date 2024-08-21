@@ -1,62 +1,56 @@
 import Blits from "@lightningjs/blits";
 import Carousel from "../carousel/Carousel.js";
-import Sizes from "../../helpers/sizes.js";
 
 export default Blits.Component('List', {
   components: {
     Carousel,
   },
   template: `
-    <Element w="1920" h="1080" color="{top: '#44037a', bottom: '#240244'}">
+    <Element w="1920" h="1080" color="#1F2127">
       <Carousel
-        :ref="'Carousel'+$index"
-        :for="section in $sections"
-        :h="$sizes[$index]"
-        :y.transition="-$steps[$rowFocused]"
+        :x="$offsetX"
+        :ref="'row'+$index"
+        :for="(section, index) in $sections"
+        :y.transition="-$steps[$focusedIndex] + $steps[$index] + 40"
         items="$section.items"
+        title="$section.title"
       />
     </Element>
   `,
   input: {
     up() {
-      this.rowFocused = (this.rowFocused - 1 + this.sections.length) % this.sections.length
+      this.focusedIndex = this.focusedIndex > 0 ? this.focusedIndex - 1 : 0
     },
     down() {
-      this.rowFocused = (this.rowFocused + 1) % this.sections.length
+      this.focusedIndex = this.focusedIndex < this.sections.length - 1 ? this.focusedIndex + 1 : this.focusedIndex
     },
   },
   state() {
     return {
-      rowFocused: 0,
+      focusedIndex: 0,
+      offsetX: 80,
     }
   },
   hooks: {
     ready() {
-      if (!this.sections.length) return;
-      this.trigger('setFocused')
-    }
+      this.trigger('focusedIndex')
+    },
   },
   computed: {
-    sizes() {
-      return this.sections.map((section) => {
-        if (!section.items.length) return 0;
-        return this.getHeight(section)
-      })
-    },
     steps() {
       return this.sections.reduce((acc, curr) => {
-        return [...acc, acc[acc.length - 1] + this.getHeight(curr)];
+        return [
+          ...acc,
+          acc[acc.length - 1] + (curr.items.length
+            ? Math.max(...curr.items.map((item) => item.height + 100))
+            : 0)
+        ];
       }, [0]);
     }
   },
-  methods: {
-    getHeight(section) {
-      return section.items.length ? Math.max(...section.items.map((item) => Sizes[item.component].height)) : 0
-    }
-  },
   watch: {
-    setFocused(v) {
-      const row = this.select(`Carousel${v}`)
+    focusedIndex(v) {
+      const row = this.select(`row${v}`)
       if (row && row.focus) row.focus()
     },
   },

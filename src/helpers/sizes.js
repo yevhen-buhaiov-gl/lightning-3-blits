@@ -1,18 +1,26 @@
 export default {
   SeriesTile: {
-    width: 330,
-    height: 537,
+    width: 360,
+    height: 565,
+    imageWidth: 330,
+    imageHeight: 440,
   },
   MovieTile: {
-    width: 420,
-    height: 240,
+    width: 360,
+    height: 565,
+    imageWidth: 330,
+    imageHeight: 440,
   },
   VideoTile: {
-    width: 420,
-    height: 240,
+    width: 450,
+    height: 410,
+    imageWidth: 420,
+    imageHeight: 235,
   },
   UpcomingLiveTile: {
-    width: 420,
-    height: 240,
+    width: 450,
+    height: 410,
+    imageWidth: 420,
+    imageHeight: 235,
   },
 }

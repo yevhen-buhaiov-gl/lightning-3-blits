@@ -1,10 +1,10 @@
 import Tile from "./Tile.js";
 
 export class MovieTile extends Tile{
-  constructor(component, data) {
-    super(component, data);
+  constructor(data) {
+    super(data);
   }
   get image() {
-    return this.data.posterImage
+    return this.data.data.posterImage
   }
 }

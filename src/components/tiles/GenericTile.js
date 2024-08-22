@@ -3,15 +3,23 @@ import Blits from "@lightningjs/blits";
 export default Blits.Component('GenericTile', {
   template: `
     <Element :w="$item.width" :h="$item.height">
-        <Element :alpha.transition="{value: $focusAlpha, duration: 200}" :w="$item.width" :h="$item.height" :effects="$effects"/>
+        <Element :alpha="$focused ? 1 : 0" :w="$item.width" :h="$item.height" :effects="$effects"/>
+        <Element
+          :x="$item.contentXOffset"
+          :y="$item.imageYPosition"
+          :alpha="$imageLoaded ? 0 : 1"
+          :w="$item.imageWidth"
+          :h="$item.imageHeight"
+          color="{left: '#414956', right: '#22252e'}"
+        />
         <Element
           :x="$item.contentXOffset"
           :y="$item.imageYPosition"
           :src="$imageUrl"
-          :alpha.transition="{value: $alpha, duration: 500}"
+          :alpha="{value: $imageLoaded ? 1 : 0.001, duration: 500}"
           :w="$item.imageWidth"
           :h="$item.imageHeight"
-          @loaded="$imageLoaded"
+          @loaded="$onImageLoaded"
         />
         <Element :x="$item.contentXOffset" :y="$item.titleYPosition">
           <Text :content="$item.title" :wordwrap="$item.imageWidth - 60" :size="$item.titleSize" :maxlines="$item.titleMaxLines"/>
@@ -23,13 +31,12 @@ export default Blits.Component('GenericTile', {
   `,
   computed: {
     imageUrl() {
-      return this.item.image + `?impolicy=nbc_com&im=Resize,width=${this.item.imageHeight};Crop,width=${this.item.imageWidth},height=${this.item.imageHeight}`
+      return this.item.image + `?impolicy=nbc_com&im=Resize,width=${this.item.imageWidth};Crop,width=${this.item.imageWidth},height=${this.item.imageHeight}`
     }
   },
   state() {
     return {
-      alpha: 0.001,
-      focusAlpha: 0.001,
+      imageLoaded: false,
       focused: false,
       effects: [
         this.shader('border', { width: 8, color: '#fff' }),
@@ -39,22 +46,15 @@ export default Blits.Component('GenericTile', {
   hooks: {
     focus() {
       this.focused = true
-      this.trigger('focused')
     },
     unfocus() {
       this.focused = false
-      this.trigger('focused')
     },
   },
-  watch: {
-    focused(v) {
-        this.focusAlpha = v ? 1 : 0
-    }
-  },
   methods: {
-    imageLoaded() {
-      this.alpha = 1
-    }
+    onImageLoaded() {
+      this.imageLoaded = true
+    },
   },
   props: ['item']
 })

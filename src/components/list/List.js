@@ -1,13 +1,16 @@
 import Blits from "@lightningjs/blits";
-import Carousel from "../carousel/Carousel.js";
+import Shelf from "../shelf/Shelf.js";
+import MarketingModule from "../MarketingModule/MarketingModule.js"
 
 export default Blits.Component('List', {
   components: {
-    Carousel,
+    Shelf,
+    MarketingModule,
   },
   template: `
     <Element w="1920" h="1080" color="#1F2127">
-      <Carousel
+      <Component
+        is="$section.component"
         :x="$offsetX"
         :ref="'row'+$index"
         :for="(section, index) in $sections"
@@ -41,9 +44,7 @@ export default Blits.Component('List', {
       return this.sections.reduce((acc, curr) => {
         return [
           ...acc,
-          acc[acc.length - 1] + (curr.items.length
-            ? Math.max(...curr.items.map((item) => item.height + 100))
-            : 0)
+          acc[acc.length - 1] + curr.height
         ];
       }, [0]);
     }
@@ -51,7 +52,7 @@ export default Blits.Component('List', {
   watch: {
     focusedIndex(v) {
       const row = this.select(`row${v}`)
-      if (row && row.focus) row.focus()
+      if (row && row.focus) this.$setTimeout(() =>  row.focus())
     },
   },
   props: ['sections']

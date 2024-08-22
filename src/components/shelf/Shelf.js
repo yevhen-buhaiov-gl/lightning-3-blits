@@ -1,9 +1,19 @@
 import Blits from "@lightningjs/blits";
-import GenericTile from "../tiles/GenericTile.js";
+import {
+  VideoTile,
+  MovieTile,
+  SeriesTile,
+  UpcomingLiveTile,
+  BrandTile,
+} from "../tiles/index.js";
 
-export default Blits.Component('Carousel', {
+export default Blits.Component('Shelf', {
   components: {
-    GenericTile,
+    VideoTile,
+    MovieTile,
+    SeriesTile,
+    UpcomingLiveTile,
+    BrandTile,
   },
   template: `
     <Element>
@@ -11,7 +21,8 @@ export default Blits.Component('Carousel', {
         <Text content="$title"/>
       </Element>
       <Element :x.transition="$rowOffset">
-        <GenericTile
+        <Component
+          is="$item.component"
           y="60"
           :ref="'item'+$idx"
           :for="(item, idx) in $items"
@@ -41,8 +52,6 @@ export default Blits.Component('Carousel', {
         focusItem.focus()
         if (value < 1) {
           this.rowOffset = 0
-        } else if (value > this.items.length - 2) {
-    
         } else {
           this.rowOffset = -this.steps[value] - (value > 0 ? value * 20 : 0)
         }
@@ -53,15 +62,11 @@ export default Blits.Component('Carousel', {
     left() {
       if (this.focused > 0) {
         this.focused--
-      } else {
-        this.focused = this.items.length - 1
       }
     },
     right() {
       if (this.focused < this.items.length - 1) {
         this.focused++
-      } else {
-        this.focused = 0
       }
     },
   },

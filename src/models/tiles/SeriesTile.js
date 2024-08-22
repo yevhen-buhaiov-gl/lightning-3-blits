@@ -1,13 +1,13 @@
 import Tile from "./Tile.js";
 
 export class SeriesTile extends Tile {
-  constructor(component, data) {
-    super(component, data);
+  constructor(data) {
+    super(data);
   }
   get title() {
-    return this.data.title
+    return this.data.data.title
   }
   get image() {
-    return this.data.posterImage
+    return this.data.data.posterImage
   }
 }

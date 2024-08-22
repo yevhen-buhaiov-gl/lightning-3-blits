@@ -1,21 +1,24 @@
 import Sizes from "../../helpers/sizes.js";
 
 export default class Tile {
-  constructor(component, data) {
-    this.component = component
+  constructor(data) {
     this.data = data
   }
 
   get id() {
-    return this.data.v4ID
+    return this.data.data.v4ID
+  }
+
+  get component() {
+    return this.data.component
   }
 
   get title() {
-    return this.data.secondaryTitle
+    return this.data.data.secondaryTitle
   }
 
   get image() {
-    return this.data.image
+    return this.data.data.image
   }
 
   get width() {
@@ -35,7 +38,7 @@ export default class Tile {
   }
 
   get whiteBrandLogo() {
-    return this.data.whiteBrandLogo
+    return this.data.data.whiteBrandLogo
   }
 
   get titleSize() {
@@ -47,7 +50,7 @@ export default class Tile {
   }
 
   get imageYPosition() {
-    return 20
+    return 16
   }
 
   get contentXOffset() {

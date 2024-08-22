@@ -23,4 +23,10 @@ export default {
     imageWidth: 420,
     imageHeight: 235,
   },
+  BrandTile: {
+    width: 456,
+    height: 350,
+    backgroundWidth: 430,
+    backgroundHeight: 260,
+  }
 }

@@ -28,5 +28,11 @@ export default {
     height: 350,
     backgroundWidth: 430,
     backgroundHeight: 260,
+  },
+  MarketingModule: {
+    width: 1920,
+    height: 800,
+    imageHeight: 580,
+    imageWidth: 960,
   }
 }

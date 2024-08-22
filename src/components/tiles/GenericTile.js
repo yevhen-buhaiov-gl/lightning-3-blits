@@ -16,7 +16,7 @@ export default Blits.Component('GenericTile', {
           :x="$item.contentXOffset"
           :y="$item.imageYPosition"
           :src="$imageUrl"
-          :alpha="{value: $imageLoaded ? 1 : 0.001, duration: 500}"
+          :alpha.transition="{value: $imageAlpha, duration: 600}"
           :w="$item.imageWidth"
           :h="$item.imageHeight"
           @loaded="$onImageLoaded"
@@ -36,6 +36,7 @@ export default Blits.Component('GenericTile', {
   },
   state() {
     return {
+      imageAlpha: 0.001,
       imageLoaded: false,
       focused: false,
       effects: [
@@ -50,6 +51,11 @@ export default Blits.Component('GenericTile', {
     unfocus() {
       this.focused = false
     },
+  },
+  watch: {
+    imageLoaded(value) {
+      if (value) this.imageAlpha = 1
+    }
   },
   methods: {
     onImageLoaded() {

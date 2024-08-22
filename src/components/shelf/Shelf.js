@@ -18,14 +18,14 @@ export default Blits.Component('Shelf', {
   template: `
     <Element>
       <Element>
-        <Text content="$title"/>
+        <Text content="$data.title"/>
       </Element>
       <Element :x.transition="$rowOffset">
         <Component
           is="$item.component"
           y="60"
           :ref="'item'+$idx"
-          :for="(item, idx) in $items"
+          :for="(item, idx) in $data.items"
           item="$item"
           :x.transition="$steps[$idx] + ($idx > 0 ? $idx * 20 : 0)"
           key="$item.id"
@@ -65,15 +65,15 @@ export default Blits.Component('Shelf', {
       }
     },
     right() {
-      if (this.focused < this.items.length - 1) {
+      if (this.focused < this.data.items.length - 1) {
         this.focused++
       }
     },
   },
   computed: {
     steps() {
-      return this.items.reduce((acc, curr) => [...acc, acc[acc.length - 1] + curr.width], [0]);
+      return this.data.items.reduce((acc, curr) => [...acc, acc[acc.length - 1] + curr.width], [0]);
     }
   },
-  props: ['title', 'items']
+  props: ['data']
 })

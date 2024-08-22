@@ -14,9 +14,8 @@ export default Blits.Component('List', {
         :x="$offsetX"
         :ref="'row'+$index"
         :for="(section, index) in $sections"
-        :y.transition="-$steps[$focusedIndex] + $steps[$index] + 40"
-        items="$section.items"
-        title="$section.title"
+        :y.transition="{value: -$steps[$focusedIndex] + $steps[$index] + $offsetY, duration: 500}"
+        data="$section"
       />
     </Element>
   `,
@@ -32,6 +31,7 @@ export default Blits.Component('List', {
     return {
       focusedIndex: 0,
       offsetX: 80,
+      offsetY: 40,
     }
   },
   hooks: {

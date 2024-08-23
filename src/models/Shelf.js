@@ -23,4 +23,8 @@ export class Shelf {
   get empty() {
     return !this.items.length
   }
+
+  get announce() {
+    return this.shelf.data.ariaLabel
+  }
 }

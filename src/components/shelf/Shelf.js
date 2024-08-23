@@ -18,7 +18,7 @@ export default Blits.Component('Shelf', {
   template: `
     <Element>
       <Element>
-        <Text content="$data.title"/>
+        <Text x="16" content="$data.title"/>
       </Element>
       <Element :x.transition="$rowOffset">
         <Component
@@ -42,6 +42,7 @@ export default Blits.Component('Shelf', {
   },
   hooks: {
     focus() {
+      //this.$announcer.speak(this.data.announce)
       this.trigger('focused')
     },
   },
@@ -49,12 +50,12 @@ export default Blits.Component('Shelf', {
     focused(value) {
       const focusItem = this.select(`item${value}`)
       if (focusItem && focusItem.focus) {
-        focusItem.focus()
         if (value < 1) {
           this.rowOffset = 0
         } else {
           this.rowOffset = -this.steps[value] - (value > 0 ? value * 20 : 0)
         }
+        focusItem.focus()
       }
     },
   },

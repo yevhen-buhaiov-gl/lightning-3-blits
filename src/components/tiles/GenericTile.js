@@ -1,13 +1,16 @@
 import Blits from "@lightningjs/blits";
+import FastImage from '../image/FastImage.js'
 
 export default Blits.Component('GenericTile', {
+  components: {
+    FastImage,
+  },
   template: `
     <Element :w="$item.width" :h="$item.height">
         <Element :alpha="$focused ? 1 : 0" :w="$item.width" :h="$item.height" :effects="$effects"/>
         <Element
           :x="$item.contentXOffset"
           :y="$item.imageYPosition"
-          :alpha="$imageLoaded ? 0 : 1"
           :w="$item.imageWidth"
           :h="$item.imageHeight"
           color="{left: '#414956', right: '#22252e'}"
@@ -16,16 +19,12 @@ export default Blits.Component('GenericTile', {
           :x="$item.contentXOffset"
           :y="$item.imageYPosition"
           :src="$imageUrl"
-          :alpha.transition="{value: $imageAlpha, duration: 600}"
           :w="$item.imageWidth"
           :h="$item.imageHeight"
-          @loaded="$onImageLoaded"
         />
         <Element :x="$item.contentXOffset" :y="$item.titleYPosition">
-          <Text :content="$item.title" :wordwrap="$item.imageWidth - 60" :size="$item.titleSize" :maxlines="$item.titleMaxLines"/>
-        </Element>
-        <Element>
-          <Element :src="$item.whiteBrandLogo" w="42" h="40" :y="$item.titleYPosition" :x="$item.contentXOffset + $item.imageWidth - 48"/>
+          <Text :content="$item.title" :wordwrap="$item.imageWidth - 90" :size="$item.titleSize" :maxlines="$item.titleMaxLines"/>
+          <FastImage :src="$item.whiteBrandLogo" w="90" h="50" :imageX="$item.imageWidth" />
         </Element>
       </Element>
   `,
@@ -36,7 +35,6 @@ export default Blits.Component('GenericTile', {
   },
   state() {
     return {
-      imageAlpha: 0.001,
       imageLoaded: false,
       focused: false,
       effects: [
@@ -47,19 +45,10 @@ export default Blits.Component('GenericTile', {
   hooks: {
     focus() {
       this.focused = true
+      //this.$announcer.speak(this.item.announce)
     },
     unfocus() {
       this.focused = false
-    },
-  },
-  watch: {
-    imageLoaded(value) {
-      if (value) this.imageAlpha = 1
-    }
-  },
-  methods: {
-    onImageLoaded() {
-      this.imageLoaded = true
     },
   },
   props: ['item']

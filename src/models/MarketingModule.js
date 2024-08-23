@@ -3,7 +3,6 @@ import Sizes from "../helpers/sizes.js";
 export class MarketingModule {
   constructor(section) {
     this.data = section
-    console.log(this.data);
   }
 
   get component() {

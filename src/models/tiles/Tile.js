@@ -60,4 +60,8 @@ export default class Tile {
   get titleYPosition() {
     return this.imageHeight + this.imageYPosition + 20
   }
+
+  get announce() {
+    return this.data.data.ariaLabel
+  }
 }

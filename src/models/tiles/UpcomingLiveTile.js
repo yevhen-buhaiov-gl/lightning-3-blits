@@ -7,4 +7,8 @@ export class UpcomingLiveTile extends Tile {
   get title() {
     return this.data.data.title
   }
+
+  get announce() {
+    return this.data.ariaLabel
+  }
 }

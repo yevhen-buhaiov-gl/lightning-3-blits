@@ -1,6 +1,10 @@
 import Blits from "@lightningjs/blits";
+import FastImage from "../image/FastImage.js";
 
 export default Blits.Component('BrandTile', {
+  components: {
+    FastImage,
+  },
   template: `
     <Element :w="$item.width" :h="$item.height">
       <Element
@@ -15,25 +19,26 @@ export default Blits.Component('BrandTile', {
         y="14"
         :w="$item.backgroundWidth"
         :h="$item.backgroundHeight"
-      />
-      <Element
-        :x="$imageX"
-        :y="$imageY"
-        :src="$item.whiteBrandLogo"
-        :alpha="$focused ? 0 : 1"
-        @loaded="$imageLoaded"
-        :w="$imageWidth"
-        :h="$imageHeight"
-      />
-      <Element
-        :x="$imageX"
-        :y="$imageY"
-        :src="$item.colorBrandLogo"
-        :alpha="$focused ? 1 : 0"
-        @loaded="$imageLoaded"
-        :w="$imageWidth"
-        :h="$imageHeight"
-      />
+      >
+        <FastImage
+          :src="$item.whiteBrandLogo"
+          :alpha="$focused ? 0 : 1"
+          w="230"
+          h="120"
+          :imageX="$item.backgroundWidth / 2"
+          :imageY="$item.backgroundHeight / 2"
+          align="center"
+        />
+         <FastImage
+          :src="$item.colorBrandLogo"
+          :alpha="$focused ? 1 : 0"
+          w="230"
+          h="120"
+          :imageX="$item.backgroundWidth / 2"
+          :imageY="$item.backgroundHeight / 2"
+          align="center"
+        />
+      </Element>
       <Text
         :x="$backgroundX"
         :y="$titleY"
@@ -44,8 +49,6 @@ export default Blits.Component('BrandTile', {
   `,
   state() {
     return {
-      imageHeight: 0,
-      imageWidth: 0,
       focused: false,
       effects: [
         this.shader('border', { width: 8, color: '#fff' }),
@@ -64,45 +67,8 @@ export default Blits.Component('BrandTile', {
     backgroundX() {
       return (this.item.width - this.item.backgroundWidth) / 2
     },
-    imageX() {
-      return (this.item.width - this.imageWidth) / 2
-    },
-    imageY() {
-      return this.item.backgroundHeight / 2 + 14 - this.imageHeight / 2
-    },
     titleY() {
       return (this.item.backgroundHeight + 14) + ((this.item.height - this.item.backgroundHeight) / 2) - 26
-    }
-  },
-  methods: {
-    imageLoaded(dimensions) {
-      const imageMaxHeight = 120
-      const imageMaxWidth = 230
-      if (dimensions.w > imageMaxWidth || dimensions.h > imageMaxHeight) {
-        const precision = dimensions.w / dimensions.h
-        if (dimensions.h > dimensions.w) {
-          this.setImageMaxHeight(imageMaxHeight, precision)
-          if (this.imageWidth > imageMaxWidth) {
-            this.setImageMaxWidth(imageMaxWidth, precision)
-          }
-        } else {
-          this.setImageMaxWidth(imageMaxWidth, precision)
-          if (this.imageHeight > imageMaxHeight) {
-            this.setImageMaxHeight(imageMaxHeight, precision)
-          }
-        }
-      } else {
-        this.imageWidth = dimensions.w
-        this.imageHeight = dimensions.h
-      }
-    },
-    setImageMaxHeight(imageMaxHeight, precision) {
-      this.imageHeight = imageMaxHeight
-      this.imageWidth = imageMaxHeight * precision
-    },
-    setImageMaxWidth(imageMaxWidth, precision) {
-      this.imageWidth = imageMaxWidth
-      this.imageHeight = imageMaxWidth / precision
     }
   },
   props: ['item']

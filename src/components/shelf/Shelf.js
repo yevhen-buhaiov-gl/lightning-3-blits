@@ -18,7 +18,7 @@ export default Blits.Component('Shelf', {
   template: `
     <Element>
       <Element>
-        <Text x="16" content="$data.title"/>
+        <Text x="16" content="$data.title" font="SourceSansPro-Light" />
       </Element>
       <Element :x.transition="$rowOffset">
         <Component
